@@ -71,12 +71,12 @@ def charts(request):
 		searchedTicker = request.session.get('meta_data')
 		if request.POST.get('tickerSearch'):
 			try: 
-				rtn = newTicker(request.POST.get('tickerSearch', None))
-				request.session['meta_data'] = request.POST.get('tickerSearch', None)
-				return rtn
+				yf.Ticker(request.POST.get('tickerSearch', None)).info['currentPrice']
 			except KeyError as e:
 				messages.error(request, 'Please enter a valid ticker.')
 				return redirect('stocksapp:charts')
+			request.session['meta_data'] = request.POST.get('tickerSearch', None)
+			return newTicker(request.POST.get('tickerSearch', None))
 		elif request.POST.get('monthBttn'):
 			return newTicker(searchedTicker, endDate - timedelta(days = 30), endDate)
 		elif request.POST.get('weekBttn'):
