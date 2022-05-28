@@ -28,7 +28,8 @@ def charts(request):
 		except KeyError as e:
 			currPrice = 0.00
 			percentChange = 0.00
-			messages.error(request, f"Enter valid ticker")
+			search = 'Invalid Ticker'
+			messages.error(request, f"Enter a valid ticker.")
 
 
 		
