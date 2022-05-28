@@ -100,7 +100,7 @@ def signup(request):
 				if form.is_valid():
 						form.save()
 						request.session['cashBalance'] = '50,000.00'
-						request.session['user'] = [form.cleaned_data.get('username'), form.cleaned_data.get('firstName'), Account.objects.get(username=form.cleaned_data.get('username')).id]
+						request.session['user'] = [form.cleaned_data.get('username'), form.cleaned_data.get('firstName').title(), Account.objects.get(username=form.cleaned_data.get('username')).id]
 						return redirect('stocksapp:charts')
 			except:
 					form = AccountForm()
@@ -118,7 +118,7 @@ def login(request):
 		try:
 			u = Account.objects.get(username=username)
 			if u.password == request.POST['password']:
-				request.session['user'] = [username, u.firstName, u.id]
+				request.session['user'] = [username, u.firstName.title(), u.id]
 				request.session['cashBalance'] = '{:,.2f}'.format(u.cashBalance)
 				return redirect('stocksapp:charts')
 		except (KeyError, Account.DoesNotExist):
