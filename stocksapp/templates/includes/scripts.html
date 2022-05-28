@@ -1,0 +1,54 @@
+<!-- Core -->
+<script type="application/javascript" src="/static/app_assets/jquery/js/jquery-3.3.1.min.js"></script>
+<script type="application/javascript" src="/static/app_assets/jquery/js/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="/static/app_assets/jquery/cookie/jquery.cookie.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- Vendor JS -->
+<script src="/static/assets/vendor/onscreen/dist/on-screen.umd.min.js"></script>
+
+<!-- Slider -->
+<script src="/static/assets/vendor/nouislider/distribute/nouislider.min.js"></script>
+
+<!-- Smooth scroll -->
+<script src="/static/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+
+<!-- Charts -->
+<script src="/static/assets/vendor/chartist/dist/chartist.min.js"></script>
+<script src="/static/assets/vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+
+<!-- Datepicker -->
+<script src="/static/assets/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+
+<!-- Sweet Alerts 2 -->
+<script src="/static/assets/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+<!-- Moment JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
+<!-- Vanilla JS Datepicker -->
+<script src="/static/assets/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+
+<!-- Notyf -->
+<script src="/static/assets/vendor/notyf/notyf.min.js"></script>
+
+<!-- Simplebar -->
+<script src="/static/assets/vendor/simplebar/dist/simplebar.min.js"></script>
+
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- Volt JS -->
+<!-- <script src="/static/assets/js/volt.js"></script> -->
+
+<!-- Custom app script -->
+<script type="application/javascript" src="/static/app_assets/js/notify.js"></script>
+<script type="application/javascript" src="/static/app_assets/js/app_js.js"></script>
+<script>
+    {% if messages %}
+        {% for message in messages %}
+            notification['{{ message.tags }}']("<p>" + '{{ message|capfirst }}' + "</p>");
+        {% endfor %}
+    {% endif %}
+</script>

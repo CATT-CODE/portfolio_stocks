@@ -1,0 +1,177 @@
+{% extends 'stocksapp/base.html' %}
+{% block content %}
+
+<div class="row">
+	<div class="col-12 col-xl-4">
+	<div class="col-12 px-0 my-0">
+		<div class="card border-0 shadow">
+			<div class="card-body">
+
+				<div class="d-flex align-items-center justify-content-between border-bottom my-2 pb-2">
+					
+						<form method="POST" action="{% url 'stocksapp:charts' %}">
+							{% csrf_token %}
+						<div class="d-flex flex-row justify-content-between">
+							<h2 class="fs-5 fw-bold my-1 text-success"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+								<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+							</svg> Buy</h2>
+							<input class='form-control' name="sharesToBuy" id="sharesToBuy" style="width: 30%;" type="number" min="0" value="0" step="any"></input>
+						</div>
+						<div class="table-responsive my-2">
+							<table class="table table-centered table-nowrap mb-0 rounded" style='text-align:center; vertical-align:middle'>
+								<thead class="thead-light">
+									<th class="border-0 rounded-start">Price per Share</th>
+									<th class="border-0 rounded-end">Total USD</th>
+								</thead>
+								<tbody >
+									<tr >
+										<td class="border-0 ">
+											<div  >
+												<span data-current_price="{{currentPrice}}" id="currPrice" value="{{currentPrice}}">${{currentPrice}}</span>
+											</div>
+										</td>
+										<td class="border-0 fw-bold">
+											<div >
+												<span class="fw-bold" id="calcUSDBuy">$0</span>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							
+						</div>
+						<div class="d-flex flex-row justify-content-between">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="buyCheck" required> 
+								<label class="form-check-label" for="buyCheck">Confirm Purchase</label>
+							</div>						
+							<div>
+								<button class="btn btn-sm btn-success" type="submit" id="buyBtn">Buy</button>
+							</div>
+						</div>
+					</form>
+					
+				</div>
+				
+
+				<div class="d-flex align-items-center justify-content-between my-2">
+					
+						<form method="POST" action="{% url 'stocksapp:charts' %}">
+							{% csrf_token %}
+						<div class="d-flex flex-row justify-content-between my-2">
+							<h2 class="fs-5 fw-bold my-1 text-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+								<path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+							</svg> Sell</h2>
+							<input class='form-control' id="sharesToSell" name="sharesToSell" style="width: 30%;" type="number" min="0" value="0" step="any"></input>
+						</div>
+
+						<div class="table-responsive my-2">
+							<table class="table table-centered table-nowrap mb-0 rounded" style='text-align:center; vertical-align:middle'>
+								<thead class="thead-light">
+									<th class="border-0 rounded-start">Price per Share</th>
+									<th class="border-0 rounded-end">Total USD</th>
+								</thead>
+								<tbody >
+									<tr >
+										<td class="border-0 ">
+											<div  >
+												<span data-current_price="{{currentPrice}}" id="currPrice" value="{{currentPrice}}">${{currentPrice}}</span>
+											</div>
+										</td>
+										<td class="border-0 fw-bold">
+											<div >
+												<span class="fw-bold" id="calcUSDSell">$0</span>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+
+						<div class="d-flex flex-row justify-content-between">
+							<div class="form-check"><input class="form-check-input" type="checkbox" value="" id="sellCheck" required> 
+								<label class="form-check-label" for="sellCheck">Confirm Sell</label>
+							</div>						
+							<div>
+								<button class="btn btn-sm btn-danger" type="submit" id="sellBtn">Sell</button>
+							</div>
+						</div>
+					</form>
+					
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+
+
+{% endblock %}
+{% block scripts %}
+<script  type="text/javascript">
+
+	$('#sharesToSell,#sharesToBuy').click(function(e){ 
+		var csrf = $("[name='csrfmiddlewaretoken']").val();
+		var currentPrice = $('#currPrice').data().current_price;
+		console.log(e.target.id, )
+		if (e.target.id == 'sharesToSell' || e.target.id == 'refreshSell') {
+			$('#calcUSDSell').html('Calculating')
+			$.ajax({ 
+		    type:"GET", 
+		    url: "", 
+				'csrfmiddlewaretoken': csrf,
+				success: function( data ) 
+					{ 
+							var totalCost = '$' + (parseFloat($('#sharesToSell').val()) * currentPrice).toFixed(2);
+							$('#calcUSDSell').html(totalCost);
+					} 
+		})
+		} else {
+			$('#calcUSDBuy').html('Calculating'); 
+			$.ajax({ 
+		    type:"GET", 
+		    url: "", 
+				'csrfmiddlewaretoken': csrf,
+				success: function( data ) 
+					{ 
+							var totalCost = '$' + (parseFloat($('#sharesToBuy').val()) * currentPrice).toFixed(2);
+							$('#calcUSDBuy').html(totalCost); 
+					} 
+		})
+		}
+	});
+	$('#sharesToSell,#sharesToBuy').keypress(function(e){ 
+		var csrf = $("[name='csrfmiddlewaretoken']").val();
+		var currentPrice = $('#currPrice').data().current_price;
+		console.log(e.target.id, )
+		if (e.target.id == 'sharesToSell') {
+			$('#calcUSDSell').html('Calculating')
+			$.ajax({ 
+		    type:"GET", 
+		    url: "", 
+				'csrfmiddlewaretoken': csrf,
+				success: function( data ) 
+					{ 
+							var totalCost = '$' + (parseFloat($('#sharesToSell').val()) * currentPrice).toFixed(2);
+							$('#calcUSDSell').html(totalCost);
+					} 
+		})
+		} else {
+			$('#calcUSDBuy').html('Calculating'); 
+			$.ajax({ 
+		    type:"GET", 
+		    url: "", 
+				'csrfmiddlewaretoken': csrf,
+				success: function( data ) 
+					{ 
+							var totalCost = '$' + (parseFloat($('#sharesToBuy').val()) * currentPrice).toFixed(2);
+							$('#calcUSDBuy').html(totalCost); 
+					} 
+		})
+		}
+	});
+</script>
+{% endblock %}
