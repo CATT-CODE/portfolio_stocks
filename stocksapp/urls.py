@@ -1,6 +1,7 @@
 from django.urls import path, include
 from . import views
 
+
 app_name = 'stocksapp'
 urlpatterns = [
 	path('', views.charts, name='charts'),
