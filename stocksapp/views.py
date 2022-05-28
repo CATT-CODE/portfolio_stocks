@@ -22,7 +22,7 @@ def charts(request):
 		search = search.upper()
 		request.session['meta_data'] = search
 		tickerInfo = yf.Ticker(search).info
-		currPrice = tickerInfo['currentPrice']
+		currPrice = ti if (ti := tickerInfo['currentPrice']) else '0.00'
 		percentChange = round((tickerInfo['currentPrice'] - tickerInfo['previousClose']) / tickerInfo['previousClose'] * 100, 2)
 		
 		if 'user' in request.session:
@@ -70,11 +70,6 @@ def charts(request):
 		endDate = now.date()
 		searchedTicker = request.session.get('meta_data')
 		if request.POST.get('tickerSearch'):
-			try: 
-				yf.Ticker(request.POST.get('tickerSearch', None)).info['currentPrice']
-			except KeyError as e:
-				messages.error(request, 'Please enter a valid ticker.')
-				return redirect('stocksapp:charts')
 			request.session['meta_data'] = request.POST.get('tickerSearch', None)
 			return newTicker(request.POST.get('tickerSearch', None))
 		elif request.POST.get('monthBttn'):
