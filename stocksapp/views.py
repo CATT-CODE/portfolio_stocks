@@ -20,10 +20,17 @@ def charts(request):
 	
 	def newTicker(search=request.session['meta_data'] if 'meta_data' in request.session else random.choices(['GME', 'AAPL', 'AMZN', 'TSLA'])[0], start=now.date() - timedelta(days = 365), end=now.date()):
 		search = search.upper()
-		request.session['meta_data'] = search
 		tickerInfo = yf.Ticker(search).info
-		currPrice = ti if (ti := tickerInfo['currentPrice']) else '0.00'
-		percentChange = round((tickerInfo['currentPrice'] - tickerInfo['previousClose']) / tickerInfo['previousClose'] * 100, 2)
+		try: 
+			currPrice = tickerInfo['currentPrice']
+			percentChange = round((currPrice - tickerInfo['previousClose']) / tickerInfo['previousClose'] * 100, 2)
+			request.session['meta_data'] = search
+		except KeyError as e:
+			currPrice = 0.00
+			percentChange = 0.00
+			messages.error(request, f"Enter valid ticker")
+
+
 		
 		if 'user' in request.session:
 			a = get_or_none(Account, id=request.session['user'][2])
