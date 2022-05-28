@@ -1,9 +1,11 @@
 asgiref==3.5.1
+autopep8==1.6.0
 beautifulsoup4==4.11.1
 cachetools==4.2.4
 certifi==2021.10.8
 charset-normalizer==2.0.12
 decorator==4.4.2
+dj-database-url==0.5.0
 Django==4.0.4
 gunicorn==20.1.0
 idna==3.3
@@ -13,6 +15,7 @@ numpy==1.22.3
 orjson==3.6.8
 pandas==1.4.2
 plotly==5.8.0
+pycodestyle==2.8.0
 python-dateutil==2.8.2
 python-decouple==3.6
 pytz==2022.1
@@ -22,5 +25,7 @@ six==1.16.0
 soupsieve==2.3.2.post1
 sqlparse==0.4.2
 tenacity==8.0.1
+toml==0.10.2
 urllib3==1.26.9
+whitenoise==6.1.0
 yfinance==0.1.70
