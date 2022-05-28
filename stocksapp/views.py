@@ -18,7 +18,7 @@ now = timezone.now()
 
 def charts(request):
 	
-	def newTicker(search=request.session['meta_data'] if 'meta_data' in request.session else random.choices(['GME', 'AAPL', 'AMZN', 'TSLA'])[0], start=now.date() - timedelta(days = 365), end=now.date()):
+	def newTicker(search=request.session['meta_data'] if 'meta_data' in request.session else 'GME', start=now.date() - timedelta(days = 810), end=now.date()):
 		search = search.upper()
 		tickerInfo = yf.Ticker(search).info
 		try: 
