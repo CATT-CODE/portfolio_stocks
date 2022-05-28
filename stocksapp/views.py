@@ -29,8 +29,8 @@ def charts(request):
 			a = get_or_none(Account, id=request.session['user'][2])
 			if (q1 := get_or_none(Positions, account_id=request.session['user'][2], symbol=search)):
 				p, avp = q1.shares, q1.avgPricePerShare 
-				th = [(row.symbol, row.timeDate.date(), row.shares, row.cashPrice) for row in Transaction.objects.filter(account=a).order_by('-timeDate').all()[:5]]
 			else: p, avp, th = 0, 0, [('N/A', now.date(), -0.1, 0.01)]
+			th = [(row.symbol, row.timeDate.date(), row.shares, row.cashPrice) for row in qth] if (qth := Transaction.objects.filter(account=a).order_by('-timeDate').all()[:5]) else [('N/A', now.date(), -0.1, 0.01)]
 			sharesGraph = [ ( row.symbol, row.shares, '{:,.2f}'.format(row.avgPricePerShare), ) for row in q] if (q := Positions.objects.filter(account_id=request.session['user'][2]).all()) else 'No Shares Available'
 			# if sharesGraph != 'No Shares Available':
 			# 	sharesGraph
