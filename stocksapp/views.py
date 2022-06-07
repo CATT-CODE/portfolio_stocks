@@ -100,7 +100,7 @@ def charts(request):
 
 def signup(request):
 		if 'user' in request.session:
-			return redirect('stocksapp:charts')
+			return HttpResponseRedirect(reverse('stocksapp:charts'))
 
 		if request.method == 'POST':
 			try:
@@ -109,7 +109,7 @@ def signup(request):
 						form.save()
 						request.session['cashBalance'] = '50,000.00'
 						request.session['user'] = [form.cleaned_data.get('username'), form.cleaned_data.get('firstName').title(), Account.objects.get(username=form.cleaned_data.get('username')).id]
-						return redirect('stocksapp:charts')
+						return HttpResponseRedirect(reverse('stocksapp:charts'))
 			except:
 					form = AccountForm()
 					return render(request, 'stocksapp/signup.html', {'form': form, 'msg': 'Username is not unique, try again!'})
@@ -119,7 +119,7 @@ def signup(request):
 
 def login(request):
 	if 'user' in request.session:
-		return redirect('stocksapp:charts')
+		return HttpResponseRedirect(reverse('stocksapp:charts'))
 
 	if request.method == 'POST':
 		username = request.POST['username']
@@ -128,7 +128,7 @@ def login(request):
 			if u.password == request.POST['password']:
 				request.session['user'] = [username, u.firstName.title(), u.id]
 				request.session['cashBalance'] = '{:,.2f}'.format(u.cashBalance)
-				return redirect('stocksapp:charts')
+				return HttpResponseRedirect(reverse('stocksapp:charts'))
 		except (KeyError, Account.DoesNotExist):
 			return render(request, 'stocksapp/login.html', {'msg': 'Username/password incorrect, try again.'})
 	else:
